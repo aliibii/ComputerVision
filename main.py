@@ -1,6 +1,7 @@
 import cv2
-import winsound
-cam = cv2.VideoCapture(1)
+import simpleaudio
+import wave
+cam = cv2.VideoCapture(0)
 while cam.isOpened():
     ret, frame1 = cam.read()
     ret, frame2 = cam.read()
@@ -16,7 +17,13 @@ while cam.isOpened():
             continue
         x, y, w, h = cv2.boundingRect(c)
         cv2.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        winsound.PlaySound('alert.wav', winsound.SND_ASYNC)
+        
+        wave_obj = simpleaudio.WaveObject.from_wave_file("alert.wav")
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
+
+
+
     if cv2.waitKey(10) == ord('q'):
         break
     cv2.imshow('Granny Cam', frame1)
